@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#254b3c">
+<title>사자성어 공부방</title>
+<style>
+:root{--g:#254b3c;--g2:#36765a;--gold:#d5a64a;--bg:#f2f5ef;--ink:#24332b;--muted:#68756d;--line:#e1e8df;--red:#a83f35}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#edf3ed,#f8f5eb);font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:var(--ink);min-height:100vh}
+.wrap{max-width:820px;margin:auto;padding:18px 15px 40px}.head{text-align:center;padding:13px 8px 18px}.eyebrow{font-size:12px;letter-spacing:3px;font-weight:800;color:var(--g2)}h1{font-size:clamp(30px,7vw,44px);color:var(--g);margin:7px 0 4px;letter-spacing:-1.5px}.head p{margin:0;color:var(--muted)}
+nav{display:flex;gap:7px;background:#e5ece4;padding:6px;border-radius:16px;margin:0 0 15px}nav button{flex:1;border:0;background:transparent;border-radius:11px;padding:12px 6px;font-weight:800;color:var(--g);font-size:14px;cursor:pointer}nav button.active{background:white;box-shadow:0 2px 9px #24483212}
+.panel{background:white;border:1px solid var(--line);border-radius:23px;padding:22px;box-shadow:0 12px 35px #294a3510;margin-bottom:14px}h2{font-size:21px;margin:0 0 14px;color:var(--g)}.muted{color:var(--muted)}.small{font-size:13px;line-height:1.65;color:var(--muted)}
+.field{margin:15px 0}.field label{display:block;font-weight:800;margin-bottom:9px}.choices{display:flex;gap:8px;flex-wrap:wrap}.choice{border:1px solid #d6dfd7;background:white;color:var(--ink);border-radius:13px;padding:11px 13px;font-size:14px;font-weight:700;cursor:pointer;flex:1;min-width:90px}.choice.active{background:var(--g);border-color:var(--g);color:white}
+.primary,.secondary{border:0;border-radius:14px;padding:14px 17px;font-size:16px;font-weight:800;cursor:pointer}.primary{background:var(--g);color:white;width:100%;margin-top:8px}.secondary{background:#edf3ed;color:var(--g)}button:focus-visible,input:focus-visible{outline:3px solid #e4bd68;outline-offset:2px}.hidden{display:none!important}
+.today{background:linear-gradient(135deg,#254b3c,#3d765b);color:white;text-align:center}.today h2{color:white}.today .four{font-size:35px;font-weight:900;letter-spacing:7px;margin:10px 0}.hanja{font-size:17px;color:#e9d7a9}.today p{color:#f0f4ef;line-height:1.65}.today button{background:#fff;color:var(--g);width:auto}
+.meta{display:flex;justify-content:space-between;gap:8px;align-items:center;color:var(--muted);font-size:14px;font-weight:750;flex-wrap:wrap}.pill{background:#edf3ed;color:var(--g);padding:7px 11px;border-radius:30px}.progress{height:8px;background:#edf0eb;border-radius:20px;overflow:hidden;margin:14px 0 20px}.bar{height:100%;width:0;background:var(--gold);transition:width .25s}
+.question{background:#f7f5ee;border-radius:20px;padding:24px 12px;text-align:center;margin:15px 0}.question .hint{font-size:14px;color:var(--muted);font-weight:750}.word{font-size:clamp(40px,11vw,64px);font-weight:900;letter-spacing:8px;color:var(--g);margin:12px 0}.blank{color:var(--gold)}.answerrow{display:flex;gap:9px}.answerrow input{min-width:0;flex:1;border:2px solid #dce4dc;border-radius:13px;padding:14px;font-size:22px;text-align:center;font-weight:850;letter-spacing:6px}.answerrow button{width:115px;margin:0}.feedback{border-radius:14px;padding:14px;margin-top:13px;line-height:1.65}.good{background:#e8f5eb;color:#205b36}.bad{background:#fff0ed;color:#943b31}.meaning{font-size:14px;margin-top:5px;color:inherit;opacity:.9}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}.actions button{flex:1;min-width:120px}
+.listitem{padding:14px 2px;border-bottom:1px solid #edf0eb}.listitem:last-child{border:0}.listitem strong{color:var(--g);font-size:18px}.listitem .sub{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5}.tag{display:inline-block;font-size:11px;background:#edf3ed;color:var(--g);border-radius:20px;padding:4px 8px;margin-left:6px}
+.score{font-size:55px;font-weight:900;color:var(--g);text-align:center;margin:8px}.center{text-align:center}.footer{text-align:center;color:#89948c;font-size:12px;padding:10px}
+@media(max-width:450px){.panel{padding:18px;border-radius:20px}.answerrow{flex-direction:column}.answerrow button{width:100%}nav button{font-size:12px}.choice{min-width:calc(50% - 8px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="head"><div class="eyebrow">LEARN · PLAY · GROW</div><h1>사자성어 공부방</h1><p>재미있게 맞히고, 뜻을 배우고, 오래 기억하세요</p></header>
+<nav>
+<button class="active" data-tab="play">게임하기</button><button data-tab="today">오늘의 사자성어</button><button data-tab="study">나의 학습장</button>
+</nav>
+
+<section id="play" class="tab">
+<div id="setup" class="panel">
+<h2>게임 설정</h2>
+<div class="field"><label>난이도</label><div class="choices" data-setting="level"><button class="choice active" data-value="전체">전체</button><button class="choice" data-value="초급">초급</button><button class="choice" data-value="중급">중급</button><button class="choice" data-value="고급">고급</button></div></div>
+<div class="field"><label>문제 수</label><div class="choices" data-setting="count"><button class="choice active" data-value="10">10문제</button><button class="choice" data-value="20">20문제</button><button class="choice" data-value="30">30문제</button></div></div>
+<div class="field"><label>출제 방식</label><div class="choices" data-setting="mode"><button class="choice active" data-value="mix">두 유형 섞기</button><button class="choice" data-value="front">앞 두 글자 제시</button><button class="choice" data-value="back">뒤 두 글자 제시</button></div></div>
+<p class="small">정답 확인 후 한자와 뜻풀이를 볼 수 있습니다. 힌트를 사용하면 정답 점수가 줄어듭니다.</p>
+<button id="start" class="primary">게임 시작하기</button>
+</div>
+<div id="game" class="panel hidden">
+<div class="meta"><span id="progressText">문제 1 / 10</span><span class="pill" id="scoreText">점수 0점</span><span class="pill" id="levelText">초급</span></div><div class="progress"><div class="bar" id="bar"></div></div>
+<div class="question"><div class="hint" id="typeText"></div><div class="word" id="word"></div><div class="muted">빈칸에 들어갈 두 글자를 입력하세요</div></div>
+<div class="answerrow"><input id="answer" maxlength="2" placeholder="두 글자" aria-label="정답 두 글자" autocomplete="off"><button id="check" class="primary">정답 확인</button></div>
+<div id="feedback" class="feedback hidden" aria-live="polite"></div>
+<div class="actions"><button id="hintBtn" class="secondary">힌트 보기</button><button id="next" class="primary hidden">다음 문제</button></div>
+</div>
+<div id="result" class="panel hidden"><h2 class="center">게임 결과</h2><div class="score" id="finalScore">0점</div><p id="finalLine" class="center muted"></p><div id="wrongList"></div><div class="actions"><button id="retryWrong" class="secondary">오답 다시 풀기</button><button id="newGame" class="primary">새 게임</button></div></div>
+</section>
+
+<section id="today" class="tab hidden">
+<div class="panel today"><div class="eyebrow" style="color:#e8d7a7">TODAY'S IDIOM</div><h2>오늘의 사자성어</h2><div class="four" id="todayWord"></div><div class="hanja" id="todayHanja"></div><p id="todayMeaning"></p><button class="secondary" id="speakToday">🔊 소리로 듣기</button></div>
+<div class="panel"><h2>오늘의 한마디</h2><p class="small">사자성어는 짧은 네 글자 안에 오랜 지혜와 삶의 경험을 담고 있습니다. 하루에 하나씩 익혀 보세요.</p><button class="primary" id="saveToday">학습장에 담기</button></div>
+</section>
+
+<section id="study" class="tab hidden">
+<div class="panel"><h2>나의 학습장</h2><p class="small">게임에서 틀린 문제와 직접 저장한 사자성어가 여기에 모입니다. 브라우저에 저장되어 다음에 다시 열어도 확인할 수 있습니다.</p><div id="savedList"></div><button id="clearSaved" class="secondary" style="width:100%;margin-top:12px">학습장 비우기</button></div>
+</section>
+<div class="footer">별도 설치 없이 실행 · PC와 스마트폰 화면에 최적화</div>
+</div>
+<script>
+const data=[
+["고진감래","苦盡甘來","고생 끝에 즐거움이 온다는 뜻","초급","쓴 것이 다하면 단 것이 온다"],
+["전화위복","轉禍爲福","화가 바뀌어 오히려 복이 된다는 뜻","초급","화가 복으로 바뀐다"],
+["일석이조","一石二鳥","한 가지 일로 두 가지 이익을 얻음","초급","돌 하나로 새 두 마리를 잡는다"],
+["작심삼일","作心三日","굳게 먹은 마음이 사흘을 가지 못함","초급","결심이 오래가지 못한다"],
+["동문서답","東問西答","물음과 전혀 맞지 않는 엉뚱한 대답","초급","동쪽을 묻는데 서쪽을 답한다"],
+["유비무환","有備無患","미리 준비하면 근심이 없음","초급","준비가 있으면 걱정이 없다"],
+["금상첨화","錦上添花","좋은 일에 또 좋은 일이 더해짐","초급","비단 위에 꽃을 더한다"],
+["설상가상","雪上加霜","어려운 일에 나쁜 일이 거듭됨","초급","눈 위에 서리가 더해진다"],
+["이심전심","以心傳心","말하지 않아도 마음과 마음이 통함","초급","마음에서 마음으로 전한다"],
+["동고동락","同苦同樂","괴로움과 즐거움을 함께함","초급","고생과 기쁨을 같이 나눈다"],
+["대기만성","大器晩成","큰 인물은 오랜 시간 뒤에 이루어짐","초급","큰 그릇은 늦게 만들어진다"],
+["역지사지","易地思之","처지를 바꾸어 상대방 입장에서 생각함","초급","입장을 바꾸어 생각한다"],
+["유유상종","類類相從","비슷한 사람끼리 서로 어울림","초급","같은 무리끼리 모인다"],
+["구사일생","九死一生","죽을 뻔한 위험에서 겨우 살아남음","초급","아홉 번 죽을 뻔하다 살아난다"],
+["십시일반","十匙一飯","여러 사람이 조금씩 힘을 보태면 큰 도움이 됨","초급","열 숟가락으로 밥 한 그릇을 만든다"],
+["막상막하","莫上莫下","실력이나 형편이 서로 비슷함","초급","우열을 가리기 어렵다"],
+["백발백중","百發百中","쏘는 것마다 모두 맞음","초급","백 번 쏘아 백 번 맞힌다"],
+["일취월장","日就月將","날마다 달마다 실력이 발전함","초급","날로 달로 성장한다"],
+["자업자득","自業自得","자기가 한 일의 결과를 스스로 받음","초급","자기 행동의 결과를 얻는다"],
+["동상이몽","同床異夢","같은 일을 하면서도 서로 생각이 다름","초급","한자리에 있어도 다른 꿈을 꾼다"],
+["천고마비","天高馬肥","하늘은 높고 말은 살찐다는 가을의 풍요로운 모습","초급","가을의 맑고 풍요로운 풍경"],
+["만사형통","萬事亨通","모든 일이 뜻대로 잘 풀림","초급","모든 일이 막힘없이 이루어진다"],
+["안하무인","眼下無人","사람을 업신여기고 매우 교만함","초급","눈 아래 사람이 없다"],
+["견물생심","見物生心","물건을 보면 그것을 가지고 싶은 욕심이 생김","초급","물건을 보면 마음이 생긴다"],
+["죽마고우","竹馬故友","어릴 때부터 함께 자란 친구","초급","대나무 말을 타던 옛 친구"],
+["백년해로","百年偕老","부부가 평생 함께 살며 늙어감","초급","백 년을 함께 늙어간다"],
+["파란만장","波瀾萬丈","삶에 변화와 어려움이 많음","초급","물결과 굴곡이 매우 많다"],
+["새옹지마","塞翁之馬","인생의 길흉화복은 예측하기 어려움","중급","좋은 일과 나쁜 일은 바뀔 수 있다"],
+["청출어람","靑出於藍","제자가 스승보다 더 뛰어남","중급","쪽에서 나온 푸른빛이 쪽보다 푸르다"],
+["각골난망","刻骨難忘","은혜를 뼈에 새겨 잊기 어려움","중급","뼈에 새겨 잊지 못한다"],
+["결초보은","結草報恩","죽어서라도 은혜를 갚음","중급","풀을 묶어서라도 은혜를 갚는다"],
+["과유불급","過猶不及","지나친 것은 모자란 것과 마찬가지임","중급","지나침은 미치지 못함과 같다"],
+["타산지석","他山之石","남의 하찮은 언행도 자신을 수양하는 데 도움이 됨","중급","다른 산의 돌도 옥을 가는 데 쓴다"],
+["마이동풍","馬耳東風","남의 말을 귀담아듣지 않고 흘려버림","중급","말의 귀에 스치는 동풍"],
+["오리무중","五里霧中","일의 방향이나 상황을 알 수 없음","중급","짙은 안개 속에 있는 듯하다"],
+["풍전등화","風前燈火","바람 앞의 등불처럼 매우 위태로움","중급","바람 앞의 등불"],
+["전전긍긍","戰戰兢兢","몹시 두려워하며 조심함","중급","두려워 떨며 조심한다"],
+["노심초사","勞心焦思","마음을 쓰며 몹시 걱정하고 애태움","중급","마음을 쓰며 애태운다"],
+["감언이설","甘言利說","남의 비위를 맞추는 달콤한 말","중급","달콤한 말로 꾀는 말"],
+["어부지리","漁父之利","두 사람이 다투는 사이 제삼자가 이익을 얻음","중급","어부가 뜻밖의 이익을 얻는다"],
+["군계일학","群鷄一鶴","평범한 사람들 가운데 뛰어난 한 사람","중급","닭 무리 속의 학 한 마리"],
+["화룡점정","畫龍點睛","가장 중요한 부분을 마무리하여 일을 완성함","중급","용 그림에 눈동자를 찍는다"],
+["와신상담","臥薪嘗膽","목표를 이루기 위해 괴로움을 참고 견딤","중급","섶에 눕고 쓸개를 맛본다"],
+["형설지공","螢雪之功","어려운 환경에서도 꾸준히 공부해 이룸","중급","반딧불과 눈빛으로 공부한다"],
+["주경야독","晝耕夜讀","낮에는 일하고 밤에는 공부함","중급","낮에 밭 갈고 밤에 책 읽는다"],
+["파죽지세","破竹之勢","막을 수 없을 만큼 거침없이 나아가는 기세","중급","대나무를 쪼개는 듯한 기세"],
+["일장춘몽","一場春夢","한바탕 봄꿈처럼 덧없는 일","중급","잠깐의 봄날 꿈"],
+["유구무언","有口無言","변명할 말이 없음을 이르는 말","중급","입은 있어도 할 말이 없다"],
+["자승자박","自繩自縛","자기가 한 말과 행동에 스스로 얽매임","중급","자기 줄로 자기를 묶는다"],
+["표리부동","表裏不同","겉과 속이 서로 다름","중급","겉과 속이 같지 않다"],
+["후안무치","厚顔無恥","뻔뻔스러워 부끄러움을 모름","중급","얼굴이 두껍고 부끄러움이 없다"],
+["적반하장","賊反荷杖","잘못한 사람이 도리어 큰소리침","중급","도둑이 도리어 몽둥이를 든다"],
+["아전인수","我田引水","자기에게만 이롭게 생각하거나 행동함","중급","자기 논에 물을 끌어들인다"],
+["결자해지","結者解之","일을 만든 사람이 해결해야 함","중급","맺은 사람이 풀어야 한다"],
+["천재일우","千載一遇","좀처럼 만나기 어려운 좋은 기회","중급","천 년에 한 번 만난다"],
+["백년대계","百年大計","먼 앞날까지 내다보는 큰 계획","중급","백 년을 내다보는 계획"],
+["초지일관","初志一貫","처음 세운 뜻을 끝까지 밀고 나감","중급","처음 뜻을 한결같이 지킨다"],
+["금의환향","錦衣還鄕","성공하여 고향으로 돌아옴","중급","비단옷을 입고 고향에 돌아간다"],
+["권선징악","勸善懲惡","착한 일을 권하고 악한 일을 벌함","중급","선을 권하고 악을 징계한다"],
+["삼고초려","三顧草廬","인재를 얻기 위해 정성을 다함","고급","초가집을 세 번 찾아간다"],
+["고육지책","苦肉之策","어려운 상황을 벗어나기 위해 자신을 희생하는 계책","고급","자기 몸을 괴롭히는 계책"],
+["토사구팽","兔死狗烹","필요할 때 이용하고 쓸모없어지면 버림","고급","토끼가 잡히면 사냥개를 삶는다"],
+["읍참마속","泣斬馬謖","큰 목적을 위해 아끼는 사람도 원칙에 따라 처단함","고급","울면서 마속을 벤다"],
+["절차탁마","切磋琢磨","학문과 인격을 갈고닦음","고급","자르고 다듬고 쪼고 문지른다"],
+["남가일몽","南柯一夢","꿈처럼 덧없이 사라지는 부귀영화","고급","남쪽 가지 아래에서 꾼 꿈"],
+["호연지기","浩然之氣","하늘과 땅 사이에 가득 찬 크고 올바른 기운","고급","넓고 큰 바른 기운"],
+["안분지족","安分知足","자기 분수에 만족하며 편안히 지냄","고급","분수를 알고 만족한다"],
+["구밀복검","口蜜腹劍","말은 달콤하지만 속마음은 악함","고급","입에는 꿀, 배 속에는 칼"],
+["마부작침","磨斧作針","끈기 있게 노력하면 큰일도 이룰 수 있음","고급","도끼를 갈아 바늘을 만든다"],
+["우공이산","愚公移山","꾸준히 노력하면 큰일도 이룰 수 있음","고급","우공이 산을 옮긴다"],
+["수불석권","手不釋卷","늘 책을 가까이하며 열심히 공부함","고급","손에서 책을 놓지 않는다"],
+["괄목상대","刮目相對","남의 학식이나 재주가 크게 향상됨","고급","눈을 비비고 다시 본다"],
+["관포지교","管鮑之交","서로 깊이 이해하고 믿는 친구 사이","고급","관중과 포숙의 우정"],
+["문경지교","刎頸之交","목숨을 내놓을 만큼 깊은 우정","고급","목숨을 함께할 만큼 깊은 우정"],
+["금란지교","金蘭之交","굳고 향기로운 우정","고급","쇠처럼 굳고 난초처럼 향기롭다"],
+["백척간두","百尺竿頭","매우 위태롭고 어려운 지경","고급","백 자 장대 끝"],
+["명약관화","明若觀火","불을 보듯 분명함","고급","불을 보는 것처럼 밝고 분명하다"],
+["천양지차","天壤之差","하늘과 땅만큼 큰 차이","고급","하늘과 땅의 차이"]
+].map(a=>({word:a[0],hanja:a[1],meaning:a[2],level:a[3],hint:a[4]}));
+const $=id=>document.getElementById(id);let settings={level:"전체",count:10,mode:"mix"},qs=[],idx=0,score=0,wrong=[],answered=false,hinted=false,currentToday;
+function getSaved(){try{return JSON.parse(localStorage.getItem("idiomStudy")||"[]")}catch(e){return[]}}
+function saveSaved(a){localStorage.setItem("idiomStudy",JSON.stringify(a))}
+function addSaved(q){let a=getSaved();if(!a.some(x=>x.word===q.word)){a.push(q);saveSaved(a)}renderSaved()}
+function tab(name){document.querySelectorAll(".tab").forEach(x=>x.classList.add("hidden"));$(name).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));if(name==="study")renderSaved()}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+document.querySelectorAll("[data-setting]").forEach(g=>g.onclick=e=>{let b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.classList.remove("active"));b.classList.add("active");let k=g.dataset.setting;settings[k]=k==="count"?+b.dataset.value:b.dataset.value});
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function start(list=null){let pool=list||data.filter(q=>settings.level==="전체"||q.level===settings.level);qs=shuffle(pool).slice(0,list?list.length:Math.min(settings.count,pool.length)).map(q=>({...q,mode:settings.mode==="mix"?(Math.random()<.5?"front":"back"):settings.mode}));idx=0;score=0;wrong=[];$("setup").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");draw()}
+function draw(){let q=qs[idx];answered=false;hinted=false;$("progressText").textContent=`문제 ${idx+1} / ${qs.length}`;$("scoreText").textContent=`점수 ${score}점`;$("levelText").textContent=q.level;$("bar").style.width=`${idx/qs.length*100}%`;$("typeText").textContent=q.mode==="front"?"앞 두 글자를 보고 뒤를 맞혀 보세요":"뒤 두 글자를 보고 앞을 맞혀 보세요";$("word").innerHTML=q.mode==="front"?q.word.slice(0,2)+'<span class="blank">□□</span>':'<span class="blank">□□</span>'+q.word.slice(2);$("answer").value="";$("answer").disabled=false;$("check").disabled=false;$("feedback").className="feedback hidden";$("hintBtn").classList.remove("hidden");$("hintBtn").disabled=false;$("next").classList.add("hidden");$("answer").focus()}
+function check(){if(answered)return;let q=qs[idx],v=$("answer").value.trim().replace(/\s/g,"");if(v.length!==2){$("feedback").className="feedback bad";$("feedback").textContent="정답 두 글자를 입력해 주세요.";return}let answer=q.mode==="front"?q.word.slice(2):q.word.slice(0,2);answered=true;$("answer").disabled=true;$("check").disabled=true;if(v===answer){let pts=hinted?5:10;score+=pts;addSaved(q);$("feedback").className="feedback good";$("feedback").innerHTML=`<b>정답입니다! +${pts}점</b><div>${q.word} (${q.hanja})</div><div class="meaning">${q.meaning}</div>`}else{wrong.push(q);addSaved(q);$("feedback").className="feedback bad";$("feedback").innerHTML=`<b>정답은 ${q.word} (${q.hanja})입니다.</b><div class="meaning">${q.meaning}</div>`}$("scoreText").textContent=`점수 ${score}점`;$("hintBtn").classList.add("hidden");$("next").classList.remove("hidden");$("next").textContent=idx===qs.length-1?"결과 보기":"다음 문제"}
+function next(){idx++;if(idx<qs.length)draw();else finish()}
+function finish(){$("game").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=score+"점";$("finalLine").textContent=`${qs.length}문제 중 ${qs.length-wrong.length}문제 정답 · 정답률 ${Math.round((qs.length-wrong.length)/qs.length*100)}%`;let text=score>=qs.length*8?"훌륭합니다! 사자성어 실력이 대단합니다.":score>=qs.length*5?"잘하셨어요! 꾸준히 도전해 보세요.":"괜찮습니다. 다시 풀면서 익혀 보세요.";$("finalLine").textContent+=" · "+text;$("wrongList").innerHTML=wrong.length?'<h2 style="margin-top:22px">오답 복습</h2>'+wrong.map(q=>`<div class="listitem"><strong>${q.word} (${q.hanja})</strong><div class="sub">${q.meaning}</div></div>`).join(""):'<p class="center" style="color:#36765a;font-weight:800">모든 문제를 맞혔습니다! 축하합니다.</p>';$("retryWrong").classList.toggle("hidden",!wrong.length)}
+$("start").onclick=()=>start();$("check").onclick=check;$("answer").onkeydown=e=>{if(e.key==="Enter"){if(answered)next();else check()}};$("next").onclick=next;$("hintBtn").onclick=()=>{let q=qs[idx];hinted=true;$("hintBtn").disabled=true;$("feedback").className="feedback";$("feedback").innerHTML=`힌트: 정답의 첫 글자는 <b>${q.mode==="front"?q.word[2]:q.word[0]}</b>입니다. 정답 점수는 5점입니다.`};$("newGame").onclick=()=>{$("result").classList.add("hidden");$("setup").classList.remove("hidden")};$("retryWrong").onclick=()=>start(wrong);
+function renderSaved(){let a=getSaved();$("savedList").innerHTML=a.length?a.map(q=>`<div class="listitem"><strong>${q.word} (${q.hanja})</strong><span class="tag">${q.level}</span><div class="sub">${q.meaning}</div></div>`).join(""):'<p class="small">아직 저장된 사자성어가 없습니다. 게임을 하거나 오늘의 사자성어를 저장해 보세요.</p>'}
+$("clearSaved").onclick=()=>{if(confirm("학습장을 모두 비울까요?")){saveSaved([]);renderSaved()}};
+function speak(q){if("speechSynthesis"in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(`${q.word}. ${q.hanja}. ${q.meaning}`);u.lang="ko-KR";u.rate=.88;speechSynthesis.speak(u)}else alert("이 브라우저에서는 음성 읽기를 지원하지 않습니다.")}
+function loadToday(){let day=Math.floor(Date.now()/86400000);currentToday=data[day%data.length];$("todayWord").textContent=currentToday.word;$("todayHanja").textContent=currentToday.hanja;$("todayMeaning").textContent=currentToday.meaning}
+$("speakToday").onclick=()=>speak(currentToday);$("saveToday").onclick=()=>{addSaved(currentToday);alert("학습장에 저장했습니다.")};loadToday();renderSaved();
+</script>
+</body></html>
